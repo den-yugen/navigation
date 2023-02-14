@@ -5,7 +5,6 @@
 import UIKit
 
 class FeedVC: UIViewController {
-
     private let postButton  = AppButton(backgroundColor: .systemCyan, title: "Новость")
     private let post        = Post(title: "Новость")
 
