@@ -4,7 +4,7 @@
 
 import UIKit
 
-class FeedVC: UIViewController {
+class FeedViewController: UIViewController {
     private let postButton  = AppButton(backgroundColor: .systemCyan, title: "Новость")
     private let post        = Post(title: "Новость")
 
@@ -27,7 +27,7 @@ class FeedVC: UIViewController {
     }
 
     @objc private func pushPostVC() {
-        let postVC      = PostVC()
+        let postVC      = PostViewController()
         postVC.title    = post.title
         navigationController?.pushViewController(postVC, animated: true)
     }

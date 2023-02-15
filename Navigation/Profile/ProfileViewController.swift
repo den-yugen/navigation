@@ -4,7 +4,7 @@
 
 import UIKit
 
-class ProfileVC: UIViewController {
+class ProfileViewController: UIViewController {
     private let profileView = ProfileHeaderView()
 
     override func viewDidLoad() {
@@ -20,7 +20,8 @@ class ProfileVC: UIViewController {
         NSLayoutConstraint.activate([
             profileView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             profileView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            profileView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            profileView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            profileView.heightAnchor.constraint(equalToConstant: 220)
         ])
     }
 }
