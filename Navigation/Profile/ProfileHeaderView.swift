@@ -6,8 +6,10 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     private let avatarImageView: UIImageView = {
-        let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        let avatar = UIImageView()
         avatar.image = UIImage(named: "avatar")
+        avatar.frame.size.width = 100
+        avatar.frame.size.height = avatar.frame.size.width
         avatar.layer.borderWidth = 3
         avatar.layer.masksToBounds = false
         avatar.layer.borderColor = UIColor.white.cgColor
@@ -87,6 +89,8 @@ class ProfileHeaderView: UIView {
 
     private func configureConnstraints() {
         NSLayoutConstraint.activate([
+            avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             fullNameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor, constant: 11),
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
@@ -95,9 +99,9 @@ class ProfileHeaderView: UIView {
             statusTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 116),
             statusTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
-            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 40),
             setStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            setStatusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
