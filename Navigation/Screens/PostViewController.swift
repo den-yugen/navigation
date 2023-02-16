@@ -4,7 +4,7 @@
 
 import UIKit
 
-class PostVC: UIViewController {
+class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -17,7 +17,7 @@ class PostVC: UIViewController {
     }
 
     @objc private func barItemAction() {
-        let modalVC                     = InfoVC()
+        let modalVC                     = InfoViewController()
         modalVC.modalPresentationStyle  = .fullScreen
         present(modalVC, animated: true)
     }

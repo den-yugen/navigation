@@ -20,26 +20,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func createFeedNavigationController() -> UINavigationController {
-        let feedVC          = FeedVC()
-        feedVC.tabBarItem   = UITabBarItem(title: "Лента", image: UIImage(systemName: "newspaper"), tag: 0)
+        let feedVC                  = FeedViewController()
+        feedVC.tabBarItem           = UITabBarItem(title: "Лента", image: UIImage(systemName: "newspaper"), tag: 0)
+        feedVC.navigationItem.title = feedVC.tabBarItem.title
         return UINavigationController(rootViewController: feedVC)
     }
 
     private func createProfileNavigationController() -> UINavigationController {
-        let profileVC           = ProfileVC()
-        profileVC.tabBarItem    = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person"), tag: 1)
+        let profileVC                   = ProfileViewController()
+        profileVC.tabBarItem            = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person"), tag: 1)
+        profileVC.navigationItem.title  = profileVC.tabBarItem.title
         return UINavigationController(rootViewController: profileVC)
     }
 
     private func createTabBar() -> UITabBarController {
-        let tabBar                      = UITabBarController()
-        UITabBar.appearance().tintColor = .systemCyan
-        tabBar.viewControllers          = [createFeedNavigationController(), createProfileNavigationController()]
+        let tabBar           = UITabBarController()
+        let tabBarAppearance = UITabBarAppearance()
+
+        UITabBar.appearance().scrollEdgeAppearance  = tabBarAppearance
+        UITabBar.appearance().tintColor             = .systemCyan
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBar.viewControllers                      = [createFeedNavigationController(), createProfileNavigationController()]
         return tabBar
     }
 
     private func configureNavigationBar() {
-        UINavigationBar.appearance().tintColor = .systemCyan
+        let navigationBarAppearance = UINavigationBarAppearance()
+
+        navigationBarAppearance.configureWithOpaqueBackground()
+        UINavigationBar.appearance().scrollEdgeAppearance   = navigationBarAppearance
+        UINavigationBar.appearance().tintColor              = .systemCyan
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

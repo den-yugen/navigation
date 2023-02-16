@@ -4,13 +4,13 @@
 
 import UIKit
 
-class InfoVC: UIViewController {
+class InfoViewController: UIViewController {
 
     let alertButton = AppButton(backgroundColor: .systemCyan, title: "Предупреждение")
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray4
+        view.backgroundColor = .lightGray
         configureAlertButton()
     }
 
