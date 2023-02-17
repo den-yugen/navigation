@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func createProfileNavigationController() -> UINavigationController {
-        let profileVC                   = ProfileViewController()
+        let profileVC                   = LogInViewController()
         profileVC.tabBarItem            = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person"), tag: 1)
         profileVC.navigationItem.title  = profileVC.tabBarItem.title
         return UINavigationController(rootViewController: profileVC)
@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarAppearance = UITabBarAppearance()
 
         UITabBar.appearance().scrollEdgeAppearance  = tabBarAppearance
-        UITabBar.appearance().tintColor             = .systemCyan
+        UITabBar.appearance().tintColor             = UIColor(named: "VCblue")
         tabBarAppearance.configureWithOpaqueBackground()
         tabBar.viewControllers                      = [createFeedNavigationController(), createProfileNavigationController()]
         return tabBar
@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         navigationBarAppearance.configureWithOpaqueBackground()
         UINavigationBar.appearance().scrollEdgeAppearance   = navigationBarAppearance
-        UINavigationBar.appearance().tintColor              = .systemCyan
+        UINavigationBar.appearance().tintColor              = UIColor(named: "VCblue")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
