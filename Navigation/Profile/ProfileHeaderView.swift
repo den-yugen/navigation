@@ -45,6 +45,7 @@ class ProfileHeaderView: UIView {
         newStatus.textColor = .black
         newStatus.backgroundColor = .white
         newStatus.placeholder = "Введите текст"
+        newStatus.setPadding(10)
         newStatus.layer.cornerRadius = 12
         newStatus.layer.borderWidth = 1
         newStatus.layer.borderColor = UIColor.black.cgColor
@@ -59,7 +60,7 @@ class ProfileHeaderView: UIView {
         button.layer.shadowRadius = 4
         button.layer.shadowOpacity = 0.7
         button.layer.cornerRadius = 12
-        button.backgroundColor = .systemCyan
+        button.backgroundColor = UIColor(named: "VCblue")
         button.setTitle("Установить статус", for: .normal)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         button.setTitleColor(.white, for: .normal)
@@ -83,6 +84,7 @@ class ProfileHeaderView: UIView {
         addSubview(statusLabel)
         addSubview(statusTextField)
         addSubview(setStatusButton)
+        
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         setStatusButton.addTarget(self, action: #selector(setStatusButtonPressed), for: .touchUpInside)
     }
@@ -91,14 +93,18 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+
             fullNameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor, constant: 11),
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusLabel.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: -18),
+
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 6),
             statusTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 116),
             statusTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
+
             setStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             setStatusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
