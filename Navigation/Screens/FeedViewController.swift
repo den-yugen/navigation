@@ -36,8 +36,8 @@ class FeedViewController: UIViewController {
         NSLayoutConstraint.activate([
             buttonsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            buttonsStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            buttonsStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            buttonsStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            buttonsStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             buttonsStack.heightAnchor.constraint(equalToConstant: 110)
         ])
     }

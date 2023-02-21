@@ -19,9 +19,9 @@ class InfoViewController: UIViewController {
         alertButton.addTarget(self, action: #selector(alertAction), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            alertButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 300),
-            alertButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            alertButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            alertButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200),
+            alertButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            alertButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             alertButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }

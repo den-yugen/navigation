@@ -57,7 +57,7 @@ class LogInViewController: UIViewController {
         return password
     }()
 
-    private let loginButton: UIButton = {
+    private var loginButton: UIButton = {
         let loginButton = UIButton()
         loginButton.setTitle("Log In", for: .normal)
         loginButton.setTitleColor(.white, for: .normal)
@@ -81,9 +81,13 @@ class LogInViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-
+        scrollToBottom(animated: true)
         notification.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notification.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        scrollToBottom(animated: true)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -104,8 +108,8 @@ class LogInViewController: UIViewController {
     private func configureConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -137,14 +141,23 @@ class LogInViewController: UIViewController {
         ])
     }
 
+    private func scrollToBottom(animated: Bool) {
+        if UIDevice.current.orientation.isLandscape {
+            let bottomOffsetY = CGPointMake(0, max(scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom, 200))
+            scrollView.setContentOffset(bottomOffsetY, animated: true)
+        }
+    }
+
     @objc private func pushProfileVC() {
         let profileVC = ProfileViewController()
         navigationController?.pushViewController(profileVC, animated: true)
+        CGPointMake(self.loginButton.frame.origin.x,
+                    self.loginButton.frame.origin.y - self.scrollView.contentOffset.y)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
         if let keybordSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollView.contentInset.bottom = keybordSize.height
+            scrollView.contentInset.bottom = keybordSize.height + 30
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keybordSize.height, right: 0)
         }
     }
