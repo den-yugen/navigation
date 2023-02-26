@@ -24,6 +24,18 @@ class LogInViewController: UIViewController {
         return logo
     }()
 
+    private let formStack: UIStackView = {
+        let formStack = UIStackView()
+        formStack.axis = .vertical
+        formStack.distribution = .fillProportionally
+        formStack.layer.cornerRadius = 10
+        formStack.layer.borderWidth = 0.5
+        formStack.layer.borderColor = UIColor.systemGray.cgColor
+        formStack.layer.backgroundColor = UIColor.systemGray6.cgColor
+        formStack.translatesAutoresizingMaskIntoConstraints = false
+        return formStack
+    }()
+
     private let login: UITextField = {
         let login = UITextField()
         login.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -31,13 +43,15 @@ class LogInViewController: UIViewController {
         login.autocapitalizationType = .none
         login.placeholder = "Email or phone"
         login.setPadding(17)
-        login.layer.cornerRadius = 10
-        login.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        login.layer.borderWidth = 0.5
-        login.layer.borderColor = UIColor.lightGray.cgColor
-        login.layer.backgroundColor = UIColor.systemGray6.cgColor
         login.translatesAutoresizingMaskIntoConstraints = false
         return login
+    }()
+
+    private let divider: UIView = {
+        let divider = UIView()
+        divider.backgroundColor = .systemGray
+
+        return divider
     }()
 
     private let password: UITextField = {
@@ -48,11 +62,6 @@ class LogInViewController: UIViewController {
         password.placeholder = "Password"
         password.isSecureTextEntry = true
         password.setPadding(17)
-        password.layer.cornerRadius = 10
-        password.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        password.layer.borderWidth = 0.5
-        password.layer.borderColor = UIColor.lightGray.cgColor
-        password.layer.backgroundColor = UIColor.systemGray6.cgColor
         password.translatesAutoresizingMaskIntoConstraints = false
         return password
     }()
@@ -100,8 +109,10 @@ class LogInViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logo)
-        contentView.addSubview(login)
-        contentView.addSubview(password)
+        contentView.addSubview(formStack)
+        formStack.addArrangedSubview(login)
+        formStack.addArrangedSubview(divider)
+        formStack.addArrangedSubview(password)
         contentView.addSubview(loginButton)
     }
 
@@ -123,17 +134,25 @@ class LogInViewController: UIViewController {
             logo.widthAnchor.constraint(equalToConstant: 100),
             logo.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
-            login.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 120),
-            login.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            login.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            login.heightAnchor.constraint(equalToConstant: 50),
+            formStack.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 120),
+            formStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            formStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            formStack.heightAnchor.constraint(equalToConstant: 100),
 
-            password.topAnchor.constraint(equalTo: login.bottomAnchor, constant: -0.5),
-            password.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            password.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            password.heightAnchor.constraint(equalToConstant: 50),
+            login.topAnchor.constraint(equalTo: formStack.topAnchor),
+            login.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
+            login.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
 
-            loginButton.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 16),
+            divider.topAnchor.constraint(equalTo: login.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 0.5),
+
+            password.topAnchor.constraint(equalTo: divider.bottomAnchor),
+            password.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
+            password.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
+
+            loginButton.topAnchor.constraint(equalTo: formStack.bottomAnchor, constant: 16),
             loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
