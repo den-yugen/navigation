@@ -7,7 +7,7 @@ import UIKit
 class FeedViewController: UIViewController {
     private let postButton = AppButton(backgroundColor: .systemCyan, title: "Новость")
     private let anotherPostButton = AppButton(backgroundColor: .systemMint, title: "Новость")
-    private let post = Post(title: "Новость")
+    private let post = "Новость"
     private let buttonsStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -44,7 +44,7 @@ class FeedViewController: UIViewController {
 
     @objc private func pushPostVC() {
         let postVC = PostViewController()
-        postVC.title = post.title
+        postVC.title = post
         navigationController?.pushViewController(postVC, animated: true)
     }
 }
