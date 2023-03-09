@@ -4,7 +4,7 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+final class ProfileHeaderView: UIView {
     private let avatarImageView: UIImageView = {
         let avatar = UIImageView()
         avatar.image = UIImage(named: "avatar")

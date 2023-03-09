@@ -4,7 +4,7 @@
 
 import UIKit
 
-class AppButton: UIButton {
+final class AppButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureButton()
