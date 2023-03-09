@@ -4,7 +4,7 @@
 
 import UIKit
 
-class PostTableViewCell: UITableViewCell {
+final class PostTableViewCell: UITableViewCell {
     private let postContentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = .white
@@ -57,7 +57,7 @@ class PostTableViewCell: UITableViewCell {
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super .init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureLayout()
         configureConstraints()
     }
@@ -79,8 +79,8 @@ class PostTableViewCell: UITableViewCell {
         postTitle.text = post.title
         postImage.image = UIImage(named: post.image)
         postDescription.text = post.description
-        likes.text = "Likes: \(post.likes)"
-        views.text = "Views: \(post.views)"
+        likes.text = "Нравится: \(post.likes)"
+        views.text = "Просмотры: \(post.views)"
     }
 
     private func configureLayout() {

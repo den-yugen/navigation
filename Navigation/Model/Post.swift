@@ -2,7 +2,7 @@
 // Created by Denis Yūgen
 //
 
-import Foundation
+import UIKit
 
 struct Post {
     let title: String

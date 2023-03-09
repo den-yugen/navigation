@@ -4,7 +4,7 @@
 
 import UIKit
 
-class FeedViewController: UIViewController {
+final class FeedViewController: UIViewController {
     private let postButton = AppButton(backgroundColor: .systemCyan, title: "Новость")
     private let anotherPostButton = AppButton(backgroundColor: .systemMint, title: "Новость")
     private let post = "Новость"

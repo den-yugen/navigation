@@ -4,7 +4,7 @@
 
 import UIKit
 
-class InfoViewController: UIViewController {
+final class InfoViewController: UIViewController {
 
     let alertButton = AppButton(backgroundColor: .systemCyan, title: "Предупреждение")
 
