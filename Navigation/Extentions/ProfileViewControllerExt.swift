@@ -20,6 +20,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            cell.delegate = self
             cell.configureCell(photo: photos[indexPath.row])
             return cell
         } else {
@@ -43,14 +44,22 @@ extension ProfileViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            let photosVC = PhotosViewController()
-            navigationController?.pushViewController(photosVC, animated: true)
-        }
-    }
+//    Предыдущая реализация (оставил как вариант, чтобы не забыть)
+//    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if indexPath.section == 0 {
+//            let photosVC = PhotosViewController()
+//            navigationController?.pushViewController(photosVC, animated: true)
+//        }
+//    }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 220 : 0
+    }
+}
+
+extension ProfileViewController: PhotosTableViewCellDelegate {
+    func tapAction() {
+        navigationController?.pushViewController(PhotosViewController(), animated: true)
     }
 }

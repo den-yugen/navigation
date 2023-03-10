@@ -25,3 +25,10 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: height)
     }
 }
+
+extension PhotosTableViewCell {
+    enum Metric {
+        static let defaultInset: CGFloat = 12
+        static let minimumInset: CGFloat = 4
+    }
+}

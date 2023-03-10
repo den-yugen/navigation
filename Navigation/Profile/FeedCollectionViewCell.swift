@@ -4,7 +4,7 @@
 
 import UIKit
 
-class FeedCollectionViewCell: UICollectionViewCell {
+final class FeedCollectionViewCell: UICollectionViewCell {
     private let photoCollection: UIImageView = {
         let image = UIImageView()
         image.layer.masksToBounds = false
