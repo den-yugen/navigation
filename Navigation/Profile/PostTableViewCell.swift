@@ -14,9 +14,9 @@ final class PostTableViewCell: UITableViewCell {
 
     private let postTitle: UILabel = {
         let postTitle = UILabel()
-        postTitle.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        postTitle.font = UIFont.systemFont(ofSize: Metric.titleTextSize, weight: .bold)
         postTitle.textColor = .black
-        postTitle.numberOfLines = 2
+        postTitle.numberOfLines = 0
         postTitle.translatesAutoresizingMaskIntoConstraints = false
         return postTitle
     }()
@@ -31,7 +31,7 @@ final class PostTableViewCell: UITableViewCell {
 
     private let postDescription: UILabel = {
         let postDescription = UILabel()
-        postDescription.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        postDescription.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         postDescription.textColor = .systemGray
         postDescription.numberOfLines = 0
         postDescription.translatesAutoresizingMaskIntoConstraints = false
@@ -40,18 +40,16 @@ final class PostTableViewCell: UITableViewCell {
 
     private let likes: UILabel = {
         let likes = UILabel()
-        likes.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        likes.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         likes.textColor = .black
-        likes.numberOfLines = 1
         likes.translatesAutoresizingMaskIntoConstraints = false
         return likes
     }()
 
     private let views: UILabel = {
         let views = UILabel()
-        views.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        views.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         views.textColor = .black
-        views.numberOfLines = 1
         views.translatesAutoresizingMaskIntoConstraints = false
         return views
     }()
@@ -59,7 +57,6 @@ final class PostTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureLayout()
-        configureConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -90,10 +87,6 @@ final class PostTableViewCell: UITableViewCell {
         contentView.addSubview(postDescription)
         contentView.addSubview(likes)
         contentView.addSubview(views)
-    }
-
-    private func configureConstraints() {
-        let defaultInset: CGFloat = 16
 
         NSLayoutConstraint.activate([
             postContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -101,26 +94,27 @@ final class PostTableViewCell: UITableViewCell {
             postContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             postContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            postTitle.topAnchor.constraint(equalTo: postContentView.topAnchor, constant: defaultInset),
-            postTitle.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: defaultInset),
-            postTitle.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -defaultInset),
+            postTitle.topAnchor.constraint(equalTo: postContentView.topAnchor, constant: Metric.defaultInset),
+            postTitle.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
+            postTitle.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
 
             postImage.topAnchor.constraint(equalTo: postTitle.bottomAnchor, constant: 12),
             postImage.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
             postImage.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor),
             postImage.heightAnchor.constraint(equalTo: contentView.widthAnchor),
 
-            postDescription.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: defaultInset),
-            postDescription.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: defaultInset),
-            postDescription.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -defaultInset),
+            postDescription.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: Metric.defaultInset),
+            postDescription.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
+            postDescription.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
 
-            likes.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: defaultInset),
-            likes.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: defaultInset),
-            likes.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -defaultInset),
+            likes.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
+            likes.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
+            likes.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset),
 
-            views.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: defaultInset),
-            views.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -defaultInset),
-            views.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -defaultInset)
+            views.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
+            views.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
+            views.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset)
         ])
     }
 }
+

@@ -18,7 +18,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        configureConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -36,9 +35,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
     private func configureLayout() {
         contentView.addSubview(photoCollection)
-    }
 
-    private func configureConstraints() {
         NSLayoutConstraint.activate([
             photoCollection.topAnchor.constraint(equalTo: contentView.topAnchor),
             photoCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

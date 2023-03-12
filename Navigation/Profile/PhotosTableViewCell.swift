@@ -20,21 +20,22 @@ final class PhotosTableViewCell: UITableViewCell {
 
     private let title: UILabel = {
         let title = UILabel()
-        title.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        title.font = UIFont.systemFont(ofSize: Metric.titleTextSize, weight: .bold)
         title.textColor = .black
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
 
-    private let arrowImage: UIImageView = {
-        let image = UIImageView()
+    private let arrowImage: UIButton = {
+        let image = UIButton()
         image.tintColor = .black
+        image.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
  
     private lazy var feedCollection: UICollectionView = {
-        let defaultSpacing: CGFloat = 8
+        let defaultSpacing: CGFloat = Metric.defaulsSpacing
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: defaultSpacing, left: defaultSpacing, bottom: defaultSpacing, right: defaultSpacing)
@@ -51,9 +52,9 @@ final class PhotosTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addGesture()
         configureLayout()
-        configureConstraints()
+
+        arrowImage.addTarget(self, action: #selector(openPhotoGallery), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -62,12 +63,6 @@ final class PhotosTableViewCell: UITableViewCell {
 
     func configureCell(photo: Photo) {
         title.text = "Фотографии"
-        arrowImage.image = UIImage(systemName: "arrow.right")
-    }
-
-    private func addGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openPhotoGallery))
-        photosContentView.addGestureRecognizer(tapGesture)
     }
 
     private func configureLayout() {
@@ -75,9 +70,7 @@ final class PhotosTableViewCell: UITableViewCell {
         contentView.addSubview(title)
         contentView.addSubview(arrowImage)
         contentView.addSubview(feedCollection)
-    }
 
-    private func configureConstraints() {
         NSLayoutConstraint.activate([
             photosContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
             photosContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -94,7 +87,7 @@ final class PhotosTableViewCell: UITableViewCell {
             feedCollection.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: Metric.minimumInset),
             feedCollection.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -Metric.minimumInset),
             feedCollection.bottomAnchor.constraint(equalTo: photosContentView.bottomAnchor, constant: -Metric.minimumInset),
-            feedCollection.heightAnchor.constraint(equalToConstant: 80)
+            feedCollection.heightAnchor.constraint(equalToConstant: Metric.feedHeight)
         ])
     }
 

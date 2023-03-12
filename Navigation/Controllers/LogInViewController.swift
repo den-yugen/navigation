@@ -50,7 +50,6 @@ final class LogInViewController: UIViewController {
     private let divider: UIView = {
         let divider = UIView()
         divider.backgroundColor = .systemGray
-
         return divider
     }()
 
@@ -83,7 +82,6 @@ final class LogInViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureLayout()
-        configureConstraints()
         loginButton.addTarget(self, action: #selector(pushProfileVC), for: .touchUpInside)
     }
 
@@ -114,9 +112,7 @@ final class LogInViewController: UIViewController {
         formStack.addArrangedSubview(divider)
         formStack.addArrangedSubview(password)
         contentView.addSubview(loginButton)
-    }
 
-    private func configureConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),

@@ -12,13 +12,13 @@ final class PostViewController: UIViewController {
     }
 
     private func configureBarItem() {
-        let barItem                         = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(barItemAction))
-        navigationItem.rightBarButtonItem   = barItem
+        let barItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(barItemAction))
+        navigationItem.rightBarButtonItem = barItem
     }
 
     @objc private func barItemAction() {
-        let modalVC                     = InfoViewController()
-        modalVC.modalPresentationStyle  = .fullScreen
+        let modalVC = InfoViewController()
+        modalVC.modalPresentationStyle = .fullScreen
         present(modalVC, animated: true)
     }
 }
