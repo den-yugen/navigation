@@ -27,11 +27,11 @@ final class InfoViewController: UIViewController {
     }
 
     @objc private func alertAction() {
-        let alert           = UIAlertController(title: "Закрыть окно", message: "Вы уверены?", preferredStyle: .alert)
-        let cancelAction    = UIAlertAction(title: "Отмена", style: .destructive) { _ in
+        let alert = UIAlertController(title: "Закрыть окно", message: "Вы уверены?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .destructive) { _ in
             print("Действие отменено")
         }
-        let okAction        = UIAlertAction(title: "Закрыть", style: .default) { _ in
+        let okAction = UIAlertAction(title: "Закрыть", style: .default) { _ in
             self.dismiss(animated: true)
             print("Окно закрыто")
         }

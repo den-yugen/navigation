@@ -4,7 +4,7 @@
 
 import UIKit
 
-class FeedCollectionViewCell: UICollectionViewCell {
+final class FeedCollectionViewCell: UICollectionViewCell {
     private let photoCollection: UIImageView = {
         let image = UIImageView()
         image.layer.masksToBounds = false
@@ -18,7 +18,6 @@ class FeedCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        configureConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -36,9 +35,7 @@ class FeedCollectionViewCell: UICollectionViewCell {
 
     private func configureLayout() {
         contentView.addSubview(photoCollection)
-    }
 
-    private func configureConstraints() {
         NSLayoutConstraint.activate([
             photoCollection.topAnchor.constraint(equalTo: contentView.topAnchor),
             photoCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

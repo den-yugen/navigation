@@ -4,7 +4,13 @@
 
 import UIKit
 
+protocol PhotosTableViewCellDelegate: AnyObject {
+    func tapAction()
+}
+
 final class PhotosTableViewCell: UITableViewCell {
+    weak var delegate: PhotosTableViewCellDelegate?
+
     private let photosContentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = .systemBackground
@@ -14,21 +20,22 @@ final class PhotosTableViewCell: UITableViewCell {
 
     private let title: UILabel = {
         let title = UILabel()
-        title.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        title.font = UIFont.systemFont(ofSize: Metric.titleTextSize, weight: .bold)
         title.textColor = .black
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
 
-    private let arrowImage: UIImageView = {
-        let image = UIImageView()
+    private let arrowImage: UIButton = {
+        let image = UIButton()
         image.tintColor = .black
+        image.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-
-    private let feedCollection: UICollectionView = {
-        let defaultSpacing: CGFloat = 8
+ 
+    private lazy var feedCollection: UICollectionView = {
+        let defaultSpacing: CGFloat = Metric.defaulsSpacing
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: defaultSpacing, left: defaultSpacing, bottom: defaultSpacing, right: defaultSpacing)
@@ -38,28 +45,24 @@ final class PhotosTableViewCell: UITableViewCell {
         let feedCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         feedCollection.translatesAutoresizingMaskIntoConstraints = false
         feedCollection.register(FeedCollectionViewCell.self, forCellWithReuseIdentifier: FeedCollectionViewCell.identifier)
+        feedCollection.dataSource = self
+        feedCollection.delegate = self
         return feedCollection
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
         configureLayout()
-        configureConstraints()
+
+        arrowImage.addTarget(self, action: #selector(openPhotoGallery), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupCell() {
-        feedCollection.dataSource = self
-        feedCollection.delegate = self
-    }
-
     func configureCell(photo: Photo) {
         title.text = "Фотографии"
-        arrowImage.image = UIImage(systemName: "arrow.right")
     }
 
     private func configureLayout() {
@@ -67,11 +70,6 @@ final class PhotosTableViewCell: UITableViewCell {
         contentView.addSubview(title)
         contentView.addSubview(arrowImage)
         contentView.addSubview(feedCollection)
-    }
-
-    private func configureConstraints() {
-        let defaultInset: CGFloat = 12
-        let minimumInset: CGFloat = 4
 
         NSLayoutConstraint.activate([
             photosContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -79,17 +77,21 @@ final class PhotosTableViewCell: UITableViewCell {
             photosContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             photosContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            title.topAnchor.constraint(equalTo: photosContentView.topAnchor, constant: defaultInset),
-            title.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: defaultInset),
+            title.topAnchor.constraint(equalTo: photosContentView.topAnchor, constant: Metric.defaultInset),
+            title.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: Metric.defaultInset),
 
             arrowImage.centerYAnchor.constraint(equalTo: title.centerYAnchor),
-            arrowImage.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -defaultInset),
+            arrowImage.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -Metric.defaultInset),
 
-            feedCollection.topAnchor.constraint(equalTo: title.bottomAnchor, constant: minimumInset),
-            feedCollection.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: minimumInset),
-            feedCollection.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -minimumInset),
-            feedCollection.bottomAnchor.constraint(equalTo: photosContentView.bottomAnchor, constant: -minimumInset),
-            feedCollection.heightAnchor.constraint(equalToConstant: 80)
+            feedCollection.topAnchor.constraint(equalTo: title.bottomAnchor, constant: Metric.minimumInset),
+            feedCollection.leadingAnchor.constraint(equalTo: photosContentView.leadingAnchor, constant: Metric.minimumInset),
+            feedCollection.trailingAnchor.constraint(equalTo: photosContentView.trailingAnchor, constant: -Metric.minimumInset),
+            feedCollection.bottomAnchor.constraint(equalTo: photosContentView.bottomAnchor, constant: -Metric.minimumInset),
+            feedCollection.heightAnchor.constraint(equalToConstant: Metric.feedHeight)
         ])
+    }
+
+    @objc private func openPhotoGallery() {
+        delegate?.tapAction()
     }
 }

@@ -9,38 +9,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene       = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        window                      = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene         = windowScene
-        window?.rootViewController  = createTabBar()
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
 
         configureNavigationBar()
     }
 
     private func createFeedNavigationController() -> UINavigationController {
-        let feedVC                  = FeedViewController()
-        feedVC.tabBarItem           = UITabBarItem(title: "Лента", image: UIImage(systemName: "newspaper"), tag: 0)
+        let feedVC = FeedViewController()
+        feedVC.tabBarItem = UITabBarItem(title: "Лента", image: UIImage(systemName: "newspaper"), tag: 0)
         feedVC.navigationItem.title = feedVC.tabBarItem.title
         return UINavigationController(rootViewController: feedVC)
     }
 
     private func createProfileNavigationController() -> UINavigationController {
-        let profileVC                   = LogInViewController()
-        profileVC.tabBarItem            = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person"), tag: 1)
-        profileVC.navigationItem.title  = profileVC.tabBarItem.title
+        let profileVC = LogInViewController()
+        profileVC.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person"), tag: 1)
+        profileVC.navigationItem.title = profileVC.tabBarItem.title
         return UINavigationController(rootViewController: profileVC)
     }
 
     private func createTabBar() -> UITabBarController {
-        let tabBar           = UITabBarController()
+        let tabBar = UITabBarController()
         let tabBarAppearance = UITabBarAppearance()
 
-        UITabBar.appearance().scrollEdgeAppearance  = tabBarAppearance
-        UITabBar.appearance().tintColor             = UIColor(named: "VCblue")
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        UITabBar.appearance().tintColor = UIColor(named: "VCblue")
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBar.viewControllers                      = [createFeedNavigationController(), createProfileNavigationController()]
+        tabBar.viewControllers = [createFeedNavigationController(), createProfileNavigationController()]
         return tabBar
     }
 
@@ -48,8 +48,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationBarAppearance = UINavigationBarAppearance()
 
         navigationBarAppearance.configureWithOpaqueBackground()
-        UINavigationBar.appearance().scrollEdgeAppearance   = navigationBarAppearance
-        UINavigationBar.appearance().tintColor              = UIColor(named: "VCblue")
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "VCblue")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
