@@ -48,7 +48,7 @@ final class ProfileHeaderView: UIView {
         return status
     }()
 
-    private let statusTextField: UITextField = {
+    private lazy var statusTextField: UITextField = {
         let newStatus = UITextField()
         newStatus.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         newStatus.textColor = .black
@@ -59,10 +59,11 @@ final class ProfileHeaderView: UIView {
         newStatus.layer.borderWidth = 1
         newStatus.layer.borderColor = UIColor.black.cgColor
         newStatus.translatesAutoresizingMaskIntoConstraints = false
+        newStatus.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         return newStatus
     }()
 
-    private let setStatusButton: UIButton = {
+    private lazy var setStatusButton: UIButton = {
         let button = UIButton()
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 4, height: 5)
@@ -74,6 +75,7 @@ final class ProfileHeaderView: UIView {
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(setStatusButtonPressed), for: .touchUpInside)
         return button
     }()
 
@@ -122,9 +124,6 @@ final class ProfileHeaderView: UIView {
             setStatusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metric.defaultInset),
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-        
-        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        setStatusButton.addTarget(self, action: #selector(setStatusButtonPressed), for: .touchUpInside)
     }
 
     @objc private func statusTextChanged(_ textField: UITextField) {
