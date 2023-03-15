@@ -29,14 +29,6 @@ extension ProfileViewController: UITableViewDataSource {
             return cell
         }
     }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 {
-            return ProfileHeaderView()
-        } else {
-            return nil
-        }
-    }
 }
 
 extension ProfileViewController: UITableViewDelegate {
@@ -44,23 +36,37 @@ extension ProfileViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-//    Предыдущая реализация тапа на ячейку (оставил как вариант, чтобы не забыть)
-//    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if indexPath.section == 0 {
-//            let photosVC = PhotosViewController()
-//            navigationController?.pushViewController(photosVC, animated: true)
-//        }
-//    }
-
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 220 : 0
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            header.delegate = self
+            return header
+        } else {
+            return nil
+        }
     }
 }
 
 extension ProfileViewController: PhotosTableViewCellDelegate {
     func tapAction() {
         navigationController?.pushViewController(PhotosViewController(), animated: true)
+    }
+}
+
+extension ProfileViewController: ProfileHeaderViewDelegate {
+    func avatarTap(_ image: UIImage?, imageFrame: CGRect) {
+        let frame = header.frame
+        let currentHeaderFrame = tableView.convert(frame, to: view)
+        
+        initialImageFrame = CGRect(x: imageFrame.origin.x,
+                                   y: imageFrame.origin.y + currentHeaderFrame.origin.y,
+                                   width: imageFrame.width,
+                                   height: imageFrame.height)
+
+        animateAvatar(image, imageFrame: initialImageFrame)
     }
 }
 

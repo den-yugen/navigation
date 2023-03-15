@@ -4,7 +4,14 @@
 
 import UIKit
 
+protocol ProfileHeaderViewDelegate: AnyObject {
+    func avatarTap(_ image: UIImage?, imageFrame: CGRect)
+}
+
 final class ProfileHeaderView: UIView {
+
+    weak var delegate: ProfileHeaderViewDelegate?
+
     private let avatarImageView: UIImageView = {
         let avatar = UIImageView()
         avatar.image = UIImage(named: "avatar")
@@ -15,6 +22,7 @@ final class ProfileHeaderView: UIView {
         avatar.layer.borderColor = UIColor.white.cgColor
         avatar.layer.cornerRadius = avatar.frame.width / 2
         avatar.clipsToBounds = true
+        avatar.isUserInteractionEnabled = true
         avatar.translatesAutoresizingMaskIntoConstraints = false
         return avatar
     }()
@@ -33,7 +41,7 @@ final class ProfileHeaderView: UIView {
 
     private let statusLabel: UILabel = {
         let status = UILabel()
-        status.font = UIFont.systemFont(ofSize: Metric.defaultFontSize, weight: .regular)
+        status.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         status.textColor = .systemGray
         status.text = "Текущий статус"
         status.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +50,7 @@ final class ProfileHeaderView: UIView {
 
     private let statusTextField: UITextField = {
         let newStatus = UITextField()
-        newStatus.font = UIFont.systemFont(ofSize: Metric.defaultFontSize, weight: .regular)
+        newStatus.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         newStatus.textColor = .black
         newStatus.backgroundColor = .white
         newStatus.placeholder = "Введите текст"
@@ -72,11 +80,17 @@ final class ProfileHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemGray5
+        addGesture()
         configureLayout()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func addGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        avatarImageView.addGestureRecognizer(tapGesture)
     }
 
     private func configureLayout() {
@@ -121,11 +135,15 @@ final class ProfileHeaderView: UIView {
         statusLabel.text = statusText
         print(statusLabel.text as Any)
     }
+
+    @objc private func tapAction() {
+        delegate?.avatarTap(avatarImageView.image, imageFrame: avatarImageView.frame)
+    }
 }
 
 extension ProfileHeaderView {
     enum Metric {
-        static let defaultFontSize: CGFloat = 14
+        static let defaultTextSize: CGFloat = 14
         static let titleTextSize: CGFloat = 18
         static let defaultInset: CGFloat = 16
         static let avatarSize: CGFloat = 100
