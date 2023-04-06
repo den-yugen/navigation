@@ -14,7 +14,7 @@ final class PhotosTableViewCell: UITableViewCell {
     private let photosContentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = .systemBackground
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.disableAutoresizingMask()
         return contentView
     }()
 
@@ -22,15 +22,16 @@ final class PhotosTableViewCell: UITableViewCell {
         let title = UILabel()
         title.font = UIFont.systemFont(ofSize: Metric.titleTextSize, weight: .bold)
         title.textColor = .black
-        title.translatesAutoresizingMaskIntoConstraints = false
+        title.disableAutoresizingMask()
         return title
     }()
 
-    private let arrowImage: UIButton = {
+    private lazy var arrowImage: UIButton = {
         let image = UIButton()
         image.tintColor = .black
         image.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
-        image.translatesAutoresizingMaskIntoConstraints = false
+        image.addTarget(self, action: #selector(openPhotoGallery), for: .touchUpInside)
+        image.disableAutoresizingMask()
         return image
     }()
  
@@ -43,7 +44,7 @@ final class PhotosTableViewCell: UITableViewCell {
         layout.minimumInteritemSpacing = defaultSpacing
 
         let feedCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        feedCollection.translatesAutoresizingMaskIntoConstraints = false
+        feedCollection.disableAutoresizingMask()
         feedCollection.register(FeedCollectionViewCell.self, forCellWithReuseIdentifier: FeedCollectionViewCell.identifier)
         feedCollection.dataSource = self
         feedCollection.delegate = self
@@ -53,8 +54,6 @@ final class PhotosTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureLayout()
-
-        arrowImage.addTarget(self, action: #selector(openPhotoGallery), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {

@@ -8,4 +8,8 @@ extension UIView {
     static var identifier: String {
         String(describing: self)
     }
+
+    func disableAutoresizingMask() {
+        translatesAutoresizingMaskIntoConstraints = false
+    }
 }

@@ -11,7 +11,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         image.layer.cornerRadius = 6
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
+        image.disableAutoresizingMask()
         return image
     }()
 

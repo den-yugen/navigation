@@ -4,12 +4,23 @@
 
 import UIKit
 
+protocol PhotosCollectionViewCellDelegate: AnyObject {
+    func didTapPhoto(_ image: UIImage?, frameImage: CGRect, indexPath: IndexPath)
+}
+
 final class PhotosCollectionViewCell: UICollectionViewCell {
-    private let photoCollection: UIImageView = {
+
+    weak var delegate: PhotosCollectionViewCellDelegate?
+
+    var indexPathCell = IndexPath()
+
+    private lazy var photoCollectionView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
+        image.disableAutoresizingMask()
+        image.isUserInteractionEnabled = true
+        image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapAction)))
         return image
     }()
 
@@ -24,21 +35,29 @@ final class PhotosCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        photoCollection.image = nil
+        photoCollectionView.image = nil
+    }
+
+    func setIndexPath(_ indexPath: IndexPath) {
+        indexPathCell = indexPath
     }
 
     func configureCell(photo: Photo) {
-        photoCollection.image = photo.image
+        photoCollectionView.image = photo.image
     }
 
     private func configureLayout() {
-        contentView.addSubview(photoCollection)
+        contentView.addSubview(photoCollectionView)
 
         NSLayoutConstraint.activate([
-            photoCollection.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            photoCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            photoCollection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            photoCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
+    }
+
+    @objc private func tapAction() {
+        delegate?.didTapPhoto(photoCollectionView.image, frameImage: photoCollectionView.frame, indexPath: indexPathCell)
     }
 }

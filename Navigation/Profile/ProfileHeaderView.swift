@@ -8,22 +8,22 @@ protocol ProfileHeaderViewDelegate: AnyObject {
     func avatarTap(_ image: UIImage?, imageFrame: CGRect)
 }
 
-final class ProfileHeaderView: UIView {
+final class ProfileHeaderView: UIView, UITextFieldDelegate {
 
     weak var delegate: ProfileHeaderViewDelegate?
 
-    private let avatarImageView: UIImageView = {
+    let avatarImageView: UIImageView = {
         let avatar = UIImageView()
         avatar.image = UIImage(named: "avatar")
         avatar.frame.size.width = Metric.avatarSize
-        avatar.frame.size.height = avatar.frame.size.width
+        avatar.frame.size.height = Metric.avatarSize
         avatar.layer.borderWidth = 3
         avatar.layer.masksToBounds = false
         avatar.layer.borderColor = UIColor.white.cgColor
         avatar.layer.cornerRadius = avatar.frame.width / 2
         avatar.clipsToBounds = true
         avatar.isUserInteractionEnabled = true
-        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.disableAutoresizingMask()
         return avatar
     }()
 
@@ -33,7 +33,7 @@ final class ProfileHeaderView: UIView {
         name.textColor = .black
         name.text = "Доктор Ливси"
         name.numberOfLines = 0
-        name.translatesAutoresizingMaskIntoConstraints = false
+        name.disableAutoresizingMask()
         return name
     }()
 
@@ -44,7 +44,7 @@ final class ProfileHeaderView: UIView {
         status.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         status.textColor = .systemGray
         status.text = "Текущий статус"
-        status.translatesAutoresizingMaskIntoConstraints = false
+        status.disableAutoresizingMask()
         return status
     }()
 
@@ -58,7 +58,8 @@ final class ProfileHeaderView: UIView {
         newStatus.layer.cornerRadius = Metric.cornerRadius
         newStatus.layer.borderWidth = 1
         newStatus.layer.borderColor = UIColor.black.cgColor
-        newStatus.translatesAutoresizingMaskIntoConstraints = false
+        newStatus.delegate = self
+        newStatus.disableAutoresizingMask()
         newStatus.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         return newStatus
     }()
@@ -74,7 +75,7 @@ final class ProfileHeaderView: UIView {
         button.setTitle("Установить статус", for: .normal)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.disableAutoresizingMask()
         button.addTarget(self, action: #selector(setStatusButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -127,11 +128,19 @@ final class ProfileHeaderView: UIView {
     }
 
     @objc private func statusTextChanged(_ textField: UITextField) {
-        statusText = textField.text ?? "Введите текст"
+        statusText = textField.text ?? ""
     }
     
     @objc private func setStatusButtonPressed() {
-        statusLabel.text = statusText
+        if statusText.isEmpty {
+            statusLabel.text = "Введите текст"
+            statusLabel.textColor = .red
+            statusTextField.backgroundColor = UIColor(named: "ErrorBackground")
+        } else {
+            statusLabel.text = statusText
+            statusLabel.textColor = .systemGray
+            statusTextField.backgroundColor = .white
+        }
         print(statusLabel.text as Any)
     }
 
