@@ -5,84 +5,99 @@
 import UIKit
 
 final class LogInViewController: UIViewController {
+
+// MARK: - Properties
+
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.disableAutoresizingMask()
         return scrollView
     }()
 
     private let contentView: UIView = {
         let contentView = UIView()
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.disableAutoresizingMask()
         return contentView
     }()
 
     private let logo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "logo")
-        logo.translatesAutoresizingMaskIntoConstraints = false
+        logo.disableAutoresizingMask()
         return logo
     }()
 
     private let formStack: UIStackView = {
         let formStack = UIStackView()
         formStack.axis = .vertical
-        formStack.distribution = .fillProportionally
         formStack.layer.cornerRadius = 10
         formStack.layer.borderWidth = 0.5
+        formStack.layer.masksToBounds = true
+        formStack.spacing = -0.5
         formStack.layer.borderColor = UIColor.systemGray.cgColor
         formStack.layer.backgroundColor = UIColor.systemGray6.cgColor
-        formStack.translatesAutoresizingMaskIntoConstraints = false
+        formStack.disableAutoresizingMask()
         return formStack
     }()
 
-    private let login: UITextField = {
+    private lazy var login: UITextField = {
         let login = UITextField()
         login.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         login.textColor = .black
         login.autocapitalizationType = .none
-        login.placeholder = "Email or phone"
+        login.layer.borderWidth = 0.5
+        login.placeholder = "Наберите \"login\""
         login.setPadding(17)
-        login.translatesAutoresizingMaskIntoConstraints = false
+        login.disableAutoresizingMask()
         return login
     }()
 
-    private let divider: UIView = {
-        let divider = UIView()
-        divider.backgroundColor = .systemGray
-        return divider
-    }()
+    private let defaultLogin = "login"
 
     private let password: UITextField = {
         let password = UITextField()
         password.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         password.textColor = .black
         password.autocapitalizationType = .none
-        password.placeholder = "Password"
+        password.layer.borderWidth = 0.5
+        password.placeholder = "Наберите \"password\""
         password.isSecureTextEntry = true
         password.setPadding(17)
-        password.translatesAutoresizingMaskIntoConstraints = false
+        password.disableAutoresizingMask()
         return password
     }()
 
-    private var loginButton: UIButton = {
+    private let defaultPassword = "password"
+
+    private let errorText: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .red
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var loginButton: UIButton = {
         let loginButton = UIButton()
         loginButton.setTitle("Log In", for: .normal)
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 10
         loginButton.setBackgroundImage(UIImage(named: "blue_pixel"), for: .normal)
         loginButton.layer.masksToBounds = true
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.disableAutoresizingMask()
+        loginButton.addTarget(self, action: #selector(pushProfileVC), for: .touchUpInside)
         return loginButton
     }()
 
     private let notification = NotificationCenter.default
 
+    // MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureLayout()
-        loginButton.addTarget(self, action: #selector(pushProfileVC), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -103,14 +118,16 @@ final class LogInViewController: UIViewController {
         notification.removeObserver(UIResponder.keyboardWillHideNotification)
     }
 
+    // MARK: - Private functions
+
     private func configureLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logo)
         contentView.addSubview(formStack)
         formStack.addArrangedSubview(login)
-        formStack.addArrangedSubview(divider)
         formStack.addArrangedSubview(password)
+        contentView.addSubview(errorText)
         contentView.addSubview(loginButton)
 
         NSLayoutConstraint.activate([
@@ -133,20 +150,11 @@ final class LogInViewController: UIViewController {
             formStack.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 120),
             formStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             formStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            formStack.heightAnchor.constraint(equalToConstant: 100),
+            login.heightAnchor.constraint(equalToConstant: 50),
+            password.heightAnchor.constraint(equalToConstant: 50),
 
-            login.topAnchor.constraint(equalTo: formStack.topAnchor),
-            login.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
-            login.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
-
-            divider.topAnchor.constraint(equalTo: login.bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 0.5),
-
-            password.topAnchor.constraint(equalTo: divider.bottomAnchor),
-            password.leadingAnchor.constraint(equalTo: formStack.leadingAnchor),
-            password.trailingAnchor.constraint(equalTo: formStack.trailingAnchor),
+            errorText.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 90),
+            errorText.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
             loginButton.topAnchor.constraint(equalTo: formStack.bottomAnchor, constant: 16),
             loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -163,11 +171,37 @@ final class LogInViewController: UIViewController {
         }
     }
 
+    private func showAlert(message: String) {
+        let errorAlert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        errorAlert.addAction(dismissAction)
+        present(errorAlert, animated: true)
+    }
+
+    // MARK: - Actions
+
     @objc private func pushProfileVC() {
         let profileVC = ProfileViewController()
-        navigationController?.pushViewController(profileVC, animated: true)
-        CGPointMake(self.loginButton.frame.origin.x,
-                    self.loginButton.frame.origin.y - self.scrollView.contentOffset.y)
+        if login.text!.isEmpty {
+            login.layer.backgroundColor = UIColor(named: "ErrorBackground")?.cgColor
+            errorText.isHidden = false
+            errorText.text = "Введите логин"
+        } else if password.text!.isEmpty {
+            password.layer.backgroundColor = UIColor(named: "ErrorBackground")?.cgColor
+            errorText.isHidden = false
+            errorText.text = "Введите пароль"
+        } else if password.text!.count < 6 {
+            errorText.isHidden = false
+            errorText.text = "Пароль не может быть короче 6 символов"
+        } else if login.text != defaultLogin {
+            showAlert(message: "Неверный логин")
+        } else if password.text != defaultPassword {
+            showAlert(message: "Неверный пароль")
+        } else {
+            navigationController?.pushViewController(profileVC, animated: true)
+        }
+            CGPointMake(self.loginButton.frame.origin.x,
+                        self.loginButton.frame.origin.y - self.scrollView.contentOffset.y)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {

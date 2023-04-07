@@ -22,7 +22,7 @@ final class AppButton: UIButton {
     }
 
     private func configureButton() {
-        translatesAutoresizingMaskIntoConstraints = false
+        disableAutoresizingMask()
         layer.cornerRadius = 12
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         setTitleColor(.white, for: [.normal, .selected, .highlighted, .disabled])

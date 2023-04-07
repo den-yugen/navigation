@@ -13,7 +13,7 @@ final class FeedViewController: UIViewController {
         stack.axis = .vertical
         stack.spacing = 10
         stack.distribution = .fillEqually
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.disableAutoresizingMask()
         return stack
     }()
 

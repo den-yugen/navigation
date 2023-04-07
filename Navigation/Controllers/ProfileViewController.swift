@@ -11,7 +11,7 @@ final class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.disableAutoresizingMask()
         return tableView
     }()
 
@@ -50,7 +50,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(animatedAvatar)
         view.addSubview(closeButton)
         animatedAvatar.image = image
-        animatedAvatar.alpha = 1
         animatedAvatar.frame = CGRect(x: imageFrame.origin.x,
                                       y: imageFrame.origin.y,
                                       width: imageFrame.width,
@@ -78,7 +77,7 @@ final class ProfileViewController: UIViewController {
 
         UIView.animate(withDuration: 0.5, delay: 0.3) {
             self.animatedAvatar.frame = rect
-            self.animatedAvatar.layer.cornerRadius = UIScreen.main.bounds.width / 2
+            self.animatedAvatar.layer.cornerRadius = self.initialImageFrame.width / 2
         } completion: { _ in
             self.transparentView.removeFromSuperview()
             self.animatedAvatar.removeFromSuperview()

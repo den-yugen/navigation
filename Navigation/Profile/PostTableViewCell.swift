@@ -5,10 +5,14 @@
 import UIKit
 
 final class PostTableViewCell: UITableViewCell {
+
+    var likesCounter = Int()
+    var postViews = Int()
+
     private let postContentView: UIView = {
         let contentView = UIView()
         contentView.backgroundColor = .white
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.disableAutoresizingMask()
         return contentView
     }()
 
@@ -17,15 +21,16 @@ final class PostTableViewCell: UITableViewCell {
         postTitle.font = UIFont.systemFont(ofSize: Metric.titleTextSize, weight: .bold)
         postTitle.textColor = .black
         postTitle.numberOfLines = 0
-        postTitle.translatesAutoresizingMaskIntoConstraints = false
+        postTitle.disableAutoresizingMask()
         return postTitle
     }()
 
     private let postImage: UIImageView = {
         let postImage = UIImageView()
-        postImage.contentMode = .scaleAspectFit
+        postImage.contentMode = .scaleAspectFill
+        postImage.clipsToBounds = true
         postImage.backgroundColor = .black
-        postImage.translatesAutoresizingMaskIntoConstraints = false
+        postImage.disableAutoresizingMask()
         return postImage
     }()
 
@@ -33,25 +38,42 @@ final class PostTableViewCell: UITableViewCell {
         let postDescription = UILabel()
         postDescription.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
         postDescription.textColor = .systemGray
-        postDescription.numberOfLines = 0
-        postDescription.translatesAutoresizingMaskIntoConstraints = false
+        postDescription.numberOfLines = 3
+        postDescription.disableAutoresizingMask()
         return postDescription
     }()
 
-    private let likes: UILabel = {
-        let likes = UILabel()
-        likes.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
-        likes.textColor = .black
-        likes.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var likeButton: UIButton = {
+        let likes = UIButton()
+        likes.setBackgroundImage(UIImage(systemName: "heart"), for: .normal)
+        likes.tintColor = .black
+        likes.disableAutoresizingMask()
+        likes.addTarget(self, action: #selector(pressLike), for: .touchUpInside)
         return likes
     }()
 
-    private let views: UILabel = {
-        let views = UILabel()
-        views.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
-        views.textColor = .black
-        views.translatesAutoresizingMaskIntoConstraints = false
+    private var likesCounterView: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
+        label.textColor = .black
+        label.disableAutoresizingMask()
+        return label
+    }()
+
+    private let viewsImage: UIImageView = {
+        let views = UIImageView()
+        views.image = UIImage(systemName: "eye")
+        views.tintColor = .black
+        views.disableAutoresizingMask()
         return views
+    }()
+
+    private let viewsCounterView: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: Metric.defaultTextSize, weight: .regular)
+        label.textColor = .black
+        label.disableAutoresizingMask()
+        return label
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -68,16 +90,25 @@ final class PostTableViewCell: UITableViewCell {
         postTitle.text = ""
         postImage.image = nil
         postDescription.text = ""
-        likes.text = ""
-        views.text = ""
+        likeButton.setTitle("", for: .normal)
     }
 
     func configureCell(post: Post) {
         postTitle.text = post.title
         postImage.image = UIImage(named: post.image)
         postDescription.text = post.description
-        likes.text = "Нравится: \(post.likes)"
-        views.text = "Просмотры: \(post.views)"
+        likesCounterView.text = "\(post.likes)"
+        likesCounter = post.likes
+        viewsCounterView.text = "\(post.views)"
+        postViews = post.views
+    }
+
+    @objc func pressLike() {
+        likeButton.setBackgroundImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = .red
+        likesCounter += 1
+        likesCounterView.textColor = .red
+        likesCounterView.text = "\(likesCounter)"
     }
 
     private func configureLayout() {
@@ -85,8 +116,10 @@ final class PostTableViewCell: UITableViewCell {
         contentView.addSubview(postTitle)
         contentView.addSubview(postImage)
         contentView.addSubview(postDescription)
-        contentView.addSubview(likes)
-        contentView.addSubview(views)
+        contentView.addSubview(likeButton)
+        contentView.addSubview(likesCounterView)
+        contentView.addSubview(viewsImage)
+        contentView.addSubview(viewsCounterView)
 
         NSLayoutConstraint.activate([
             postContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -101,20 +134,26 @@ final class PostTableViewCell: UITableViewCell {
             postImage.topAnchor.constraint(equalTo: postTitle.bottomAnchor, constant: 12),
             postImage.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
             postImage.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor),
-            postImage.heightAnchor.constraint(equalTo: contentView.widthAnchor),
+            postImage.heightAnchor.constraint(equalToConstant: 250),
 
             postDescription.topAnchor.constraint(equalTo: postImage.bottomAnchor, constant: Metric.defaultInset),
             postDescription.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
             postDescription.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
 
-            likes.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
-            likes.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
-            likes.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset),
+            likeButton.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
+            likeButton.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: Metric.defaultInset),
+            likeButton.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset),
 
-            views.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
-            views.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
-            views.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset)
+            likesCounterView.centerYAnchor.constraint(equalTo: likeButton.centerYAnchor),
+            likesCounterView.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 5),
+
+            viewsCounterView.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
+            viewsCounterView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -Metric.defaultInset),
+            viewsCounterView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset),
+
+            viewsImage.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: Metric.defaultInset),
+            viewsImage.trailingAnchor.constraint(equalTo: viewsCounterView.leadingAnchor, constant: -5),
+            viewsImage.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -Metric.defaultInset)
         ])
     }
 }
-

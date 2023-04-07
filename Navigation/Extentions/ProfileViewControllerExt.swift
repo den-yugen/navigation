@@ -10,11 +10,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else {
-            return ProfileViewController.posts.count
-        }
+        return section == 0 ? 1 : Post.posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -25,7 +21,7 @@ extension ProfileViewController: UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
-            cell.configureCell(post: ProfileViewController.posts[indexPath.row])
+            cell.configureCell(post: Post.posts[indexPath.row])
             return cell
         }
     }
@@ -48,6 +44,24 @@ extension ProfileViewController: UITableViewDelegate {
             return nil
         }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section != 0 {
+            let detailedPost = DetailedPostViewController(post: Post.posts[indexPath.row], indexPath: indexPath)
+            present(detailedPost, animated: true)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            Post.posts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 }
 
 extension ProfileViewController: PhotosTableViewCellDelegate {
@@ -68,31 +82,4 @@ extension ProfileViewController: ProfileHeaderViewDelegate {
 
         animateAvatar(image, imageFrame: initialImageFrame)
     }
-}
-
-extension ProfileViewController {
-    static let posts: [Post] = [Post(title: "Новость",
-                                     author: "Доктор Ливси",
-                                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac neque maximus, dignissim metus non, porttitor arcu. Praesent id ex molestie, scelerisque justo sit amet, ultrices ex. Praesent metus augue, facilisis ac magna ac, eleifend facilisis justo. Sed et nisl.",
-                                     image: "1",
-                                     likes: 29,
-                                     views: 45),
-                                Post(title: "Ещё новость",
-                                     author: "Доктор Ливси",
-                                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac neque maximus, dignissim metus non, porttitor arcu. Praesent id ex molestie, scelerisque justo sit amet, ultrices ex. Praesent metus augue, facilisis ac magna ac, eleifend facilisis justo. Sed et nisl.",
-                                     image: "2",
-                                     likes: 10,
-                                     views: 33),
-                                Post(title: "Та ещё новость",
-                                     author: "Доктор Ливси",
-                                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac neque maximus, dignissim metus non, porttitor arcu. Praesent id ex molestie, scelerisque justo sit amet, ultrices ex. Praesent metus augue, facilisis ac magna ac, eleifend facilisis justo. Sed et nisl.",
-                                     image: "3",
-                                     likes: 47,
-                                     views: 96),
-                                Post(title: "И снова новость",
-                                     author: "Доктор Ливси",
-                                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac neque maximus, dignissim metus non, porttitor arcu. Praesent id ex molestie, scelerisque justo sit amet, ultrices ex. Praesent metus augue, facilisis ac magna ac, eleifend facilisis justo. Sed et nisl.",
-                                     image: "4",
-                                     likes: 3,
-                                     views: 45)]
 }
